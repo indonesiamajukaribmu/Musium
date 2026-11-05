@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Museum Manusia Pilihan — Leluhur Sulawesi: Dahulu & Sekarang</title>
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-soft:#F7F9FC;
+    --bg-card:#FFFFFF;
+    --ink:#0F172A;
+    --ink-soft:#475569;
+    --muted:#94A3B8;
+    --line:#E2E8F0;
+    --accent:#2563EB;
+    --accent-soft:#DBEAFE;
+    --past:#B45309;
+    --past-soft:#FEF3C7;
+    --present:#0F766E;
+    --present-soft:#CCFBF1;
+    --shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -8px rgba(15,23,42,.08);
+    --shadow-lg:0 24px 60px -20px rgba(15,23,42,.22);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter','Segoe UI',system-ui,-apple-system,Arial,sans-serif;
+    color:var(--ink);background:var(--bg);
+    line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block}
+  .container{max-width:1200px;margin:0 auto;padding:0 24px}
+
+  /* ===== HEADER ===== */
+  header.hero{
+    background:linear-gradient(180deg,#FFFFFF 0%,#F7F9FC 100%);
+    border-bottom:1px solid var(--line);
+    padding:64px 0 48px;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;
+    background:var(--accent-soft);
+    padding:6px 14px;border-radius:999px;margin-bottom:20px;
+  }
+  .eyebrow::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+  h1{
+    font-size:clamp(32px,5vw,52px);
+    font-weight:800;line-height:1.1;letter-spacing:-.02em;
+    margin-bottom:18px;max-width:880px;
+  }
+  h1 .accent{color:var(--accent)}
+  .lede{
+    font-size:18px;color:var(--ink-soft);
+    max-width:720px;margin-bottom:32px;
+  }
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:32px;
+    padding-top:24px;border-top:1px solid var(--line);
+  }
+  .hero-meta div{font-size:14px}
+  .hero-meta strong{display:block;font-size:24px;color:var(--ink);font-weight:700;margin-bottom:2px}
+  .hero-meta span{color:var(--muted);letter-spacing:.04em}
+
+  /* ===== EVOLUTION SECTION ===== */
+  section.evolution{padding:72px 0;background:var(--bg-soft)}
+  .section-head{margin-bottom:36px;max-width:760px}
+  .section-head .label{
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin-bottom:10px;
+  }
+  .section-head h2{
+    font-size:clamp(24px,3.4vw,34px);font-weight:700;
+    letter-spacing:-.01em;margin-bottom:12px;
+  }
+  .section-head p{color:var(--ink-soft);font-size:16px}
+
+  .evo-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:24px;
+  }
+  .evo-card{
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:var(--radius);padding:28px;
+    position:relative;overflow:hidden;
+  }
+  .evo-card::before{
+    content:"";position:absolute;top:0;left:0;right:0;height:4px;
+    background:var(--past);
+  }
+  .evo-card.now::before{background:var(--present)}
+  .evo-tag{
+    display:inline-block;font-size:11px;font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;
+    padding:5px 12px;border-radius:999px;margin-bottom:14px;
+    background:var(--past-soft);color:var(--past);
+  }
+  .evo-card.now .evo-tag{background:var(--present-soft);color:var(--present)}
+  .evo-card h3{font-size:20px;margin-bottom:8px;font-weight:700}
+  .evo-card .role-list{list-style:none;margin-top:14px}
+  .evo-card .role-list li{
+    padding:10px 0;border-bottom:1px dashed var(--line);
+    font-size:14px;color:var(--ink-soft);
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .evo-card .role-list li:last-child{border-bottom:none}
+  .evo-card .role-list li::before{
+    content:"";display:inline-block;width:6px;height:6px;border-radius:50%;
+    background:var(--past);margin-top:8px;flex-shrink:0;
+  }
+  .evo-card.now .role-list li::before{background:var(--present)}
+  .evo-card .role-list strong{color:var(--ink);font-weight:600}
+  .evo-arrow{
+    grid-column:1/-1;text-align:center;font-size:24px;color:var(--muted);
+    padding:8px 0;
+  }
+
+  /* ===== FILTER BAR ===== */
+  section.collection{padding:72px 0 96px}
+  .filter-bar{
+    position:sticky;top:0;z-index:30;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+    padding:14px 0;margin-bottom:36px;
+  }
+  .filter-bar .container{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+  }
+  .filter-bar .label{
+    font-size:12px;color:var(--muted);font-weight:600;
+    letter-spacing:.14em;text-transform:uppercase;margin-right:8px;
+  }
+  .chip{
+    border:1px solid var(--line);background:var(--bg);
+    color:var(--ink-soft);font-size:13px;font-weight:500;
+    padding:8px 16px;border-radius:999px;cursor:pointer;
+    transition:all .2s ease;
+  }
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .chip.active{
+    background:var(--ink);border-color:var(--ink);color:#fff;
+  }
+  .filter-count{
+    margin-left:auto;font-size:13px;color:var(--muted);
+  }
+  .filter-count strong{color:var(--ink);font-weight:700}
+
+  /* ===== CARD GRID ===== */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:24px;
+  }
+  .card{
+    background:var(--bg-card);border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;
+    cursor:pointer;position:relative;
+    transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;
+    display:flex;flex-direction:column;
+  }
+  .card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--shadow-lg);
+    border-color:var(--accent);
+  }
+  .card-media{
+    aspect-ratio:4/3;
+    background:var(--bg-soft);
+    position:relative;overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .card-media svg{width:100%;height:100%}
+  .card-era{
+    position:absolute;top:12px;left:12px;
+    font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    padding:5px 10px;border-radius:999px;z-index:2;
+    background:rgba(255,255,255,.9);backdrop-filter:blur(4px);
+  }
+  .card-era.past{color:var(--past);background:rgba(254,243,199,.95)}
+  .card-era.now{color:var(--present);background:rgba(204,251,241,.95)}
+  .card-cat{
+    position:absolute;top:12px;right:12px;
+    font-size:10px;font-weight:600;letter-spacing:.06em;
+    padding:5px 10px;border-radius:999px;z-index:2;
+    background:rgba(37,99,235,.92);color:#fff;
+  }
+  .card-body{padding:20px;flex:1;display:flex;flex-direction:column}
+  .card-name{font-size:18px;font-weight:700;line-height:1.3;margin-bottom:4px}
+  .card-years{font-size:12px;color:var(--muted);margin-bottom:10px;letter-spacing:.04em}
+  .card-role{
+    font-size:14px;color:var(--ink-soft);flex:1;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+    overflow:hidden;text-overflow:ellipsis;
+    min-height:60px;
+  }
+  .card-cta{
+    margin-top:14px;font-size:13px;font-weight:600;
+    color:var(--accent);display:inline-flex;align-items:center;gap:6px;
+    transition:gap .2s ease;
+  }
+  .card:hover .card-cta{gap:10px}
+  .card-cta::after{content:"→"}
+
+  /* avatar SVG styles */
+  .avatar-bg-past{fill:#FEF3C7}
+  .avatar-bg-now{fill:#CCFBF1}
+  .avatar-ink{fill:#0F172A}
+  .avatar-deco{fill:none;stroke-width:1.2;opacity:.55}
+  .avatar-init{font-family:Georgia,'Times New Roman',serif;font-weight:700;fill:#0F172A}
+
+  /* ===== MODAL ===== */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(15,23,42,.55);backdrop-filter:blur(6px);
+    display:none;align-items:center;justify-content:center;
+    padding:24px;animation:fade .25s ease;
+  }
+  .modal-overlay.show{display:flex}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  @keyframes slide{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .modal{
+    background:var(--bg);border-radius:var(--radius);
+    max-width:820px;width:100%;max-height:90vh;overflow-y:auto;
+    box-shadow:var(--shadow-lg);animation:slide .3s ease;
+  }
+  .modal::-webkit-scrollbar{width:8px}
+  .modal::-webkit-scrollbar-track{background:transparent}
+  .modal::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+  .modal-head{
+    position:relative;height:240px;overflow:hidden;
+    background:var(--bg-soft);
+  }
+  .modal-head svg{width:100%;height:100%}
+  .modal-close{
+    position:absolute;top:16px;right:16px;z-index:5;
+    width:36px;height:36px;border-radius:50%;
+    background:rgba(255,255,255,.9);border:none;cursor:pointer;
+    font-size:20px;color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .2s ease,background .2s ease;
+  }
+  .modal-close:hover{transform:rotate(90deg);background:#fff}
+  .modal-body{padding:32px}
+  .modal-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .modal-tags .tag{
+    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    padding:5px 10px;border-radius:999px;
+  }
+  .modal-tags .tag.past{background:var(--past-soft);color:var(--past)}
+  .modal-tags .tag.now{background:var(--present-soft);color:var(--present)}
+  .modal-tags .tag.cat{background:var(--accent-soft);color:var(--accent)}
+  .modal h2{font-size:30px;font-weight:800;margin-bottom:6px;letter-spacing:-.01em}
+  .modal .years{color:var(--muted);font-size:14px;margin-bottom:20px;letter-spacing:.04em}
+  .modal .role{font-size:17px;color:var(--ink-soft);font-style:italic;margin-bottom:20px;padding-left:16px;border-left:3px solid var(--accent)}
+  .modal .bio h4{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:24px 0 10px}
+  .modal .bio p{margin-bottom:14px;color:var(--ink-soft);font-size:15px}
+  .modal .bio ul{margin:0 0 14px 20px;color:var(--ink-soft);font-size:15px}
+  .modal .bio li{margin-bottom:6px}
+  .modal .bio li strong{color:var(--ink)}
+
+  /* ===== GALLERY ===== */
+  section.gallery{padding:72px 0;background:var(--bg-soft);border-top:1px solid var(--line)}
+  .gallery-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:14px;
+  }
+  .gallery-item{
+    aspect-ratio:1;border-radius:12px;overflow:hidden;cursor:pointer;
+    background:var(--bg);border:1px solid var(--line);
+    transition:transform .2s ease,box-shadow .2s ease;
+    position:relative;
+  }
+  .gallery-item:hover{transform:scale(1.04);box-shadow:var(--shadow)}
+  .gallery-item svg{width:100%;height:100%}
+  .gallery-item .cap{
+    position:absolute;bottom:0;left:0;right:0;
+    background:linear-gradient(transparent,rgba(15,23,42,.85));
+    color:#fff;padding:18px 12px 10px;
+    font-size:12px;font-weight:600;
+    opacity:0;transition:opacity .2s ease;
+  }
+  .gallery-item:hover .cap{opacity:1}
+
+  /* lightbox */
+  .lightbox{
+    position:fixed;inset:0;z-index:120;
+    background:rgba(15,23,42,.92);
+    display:none;align-items:center;justify-content:center;
+    padding:32px;flex-direction:column;gap:16px;
+  }
+  .lightbox.show{display:flex}
+  .lightbox-content{
+    max-width:520px;width:100%;background:var(--bg);
+    border-radius:var(--radius);overflow:hidden;
+  }
+  .lightbox-content svg{width:100%;display:block}
+  .lightbox-cap{
+    color:#fff;text-align:center;font-size:14px;
+    max-width:520px;
+  }
+  .lightbox-close{
+    position:absolute;top:24px;right:24px;
+    background:rgba(255,255,255,.15);border:none;color:#fff;
+    width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:22px;
+    transition:background .2s;
+  }
+  .lightbox-close:hover{background:rgba(255,255,255,.3)}
+
+  /* ===== FOOTER ===== */
+  footer{
+    background:var(--ink);color:#CBD5E1;
+    padding:48px 0;text-align:center;
+  }
+  footer .container{max-width:760px}
+  footer h3{color:#fff;font-size:18px;margin-bottom:10px;font-weight:700}
+  footer p{font-size:14px;line-height:1.7;color:#94A3B8}
+  footer .note{
+    margin-top:24px;padding-top:24px;border-top:1px solid #1E293B;
+    font-size:12px;color:#64748B;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media(max-width:780px){
+    .evo-grid{grid-template-columns:1fr}
+    .hero{padding:48px 0 36px}
+    section.collection,section.evolution,section.gallery{padding:48px 0}
+    .modal-body{padding:24px}
+    .modal h2{font-size:24px}
+  }
+  @media(max-width:480px){
+    .grid{grid-template-columns:1fr}
+    .filter-count{display:none}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="container">
+    <span class="eyebrow">Katalog Koleksi Museum</span>
+    <h1>Museum Manusia Pilihan<br><span class="accent">Leluhur Sulawesi</span> — Dahulu &amp; Sekarang</h1>
+    <p class="lede">
+      Koleksi 18 manusia pilihan dari tanah Sulawesi: para arung, sultan, dan
+      mangkubumi kerajaan dahulu, hingga ilmuwan, negarawan, dan atlet masa kini.
+      Sebuah perjalanan melihat bagaimana <strong>peran manusia pilihan</strong>
+      berevolusi dari medan perang dan tahta menuju laboratorium, parlemen,
+      dan panggung dunia.
+    </p>
+    <div class="hero-meta">
+      <div><strong>18</strong><span>TOKOH DIPAJANG</span></div>
+      <div><strong>9 + 9</strong><span>LAMPAU &amp; KINI</span></div>
+      <div><strong>5</strong><span>BIDANG PERAN</span></div>
+      <div><strong>4</strong><span>ABAD SEJARAH</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== EVOLUTION SECTION ===== -->
+<section class="evolution">
+  <div class="container">
+    <div class="section-head">
+      <div class="label">Bagian I — Evolusi Peran</div>
+      <h2>Dari Singgasana ke Laboratorium</h2>
+      <p>
+        Manusia pilihan Sulawesi dulu memimpin dari depan — mengangkat keris di
+        medan perang, membangun persekutuan antarkerajaan, dan menjaga adat.
+        Manusia pilihan masa kini memimpin dari ruang-ruang yang lebih luas:
+        merancang pesawat, menjaga perdamaian dunia, dan mengharumkan nama
+        bangsa di pentas internasional.
+      </p>
+    </div>
+
+    <div class="evo-grid">
+      <article class="evo-card">
+        <span class="evo-tag">Masa Lampau · Abad 17–20</span>
+        <h3>Peran Leluhur</h3>
+        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:4px">
+          Kewibawaan lahir dari keturunan, keberanian di medan laga, dan
+          kebijaksanaan dalam musyawarah adat.
+        </p>
+        <ul class="role-list">
+          <li><span><strong>Pemimpin perang</strong> — melawan penjajah, menjaga kedaulatan kerajaan</span></li>
+          <li><span><strong>Arumpone &amp; Sultan</strong> — pemegang tahta Kerajaan Bone, Gowa, Luwu</span></li>
+          <li><span><strong>Mangkubumi</strong> — perdana menteri yang mengatur pemerintahan</span></li>
+          <li><span><strong>Penjaga adat</strong> — pelindung nilai &amp; lontaraq Bugis-Makassar</span></li>
+          <li><span><strong>Ulama &amp; pemberontak</strong> — memimpin perlawanan bersenjata (1900–1949)</span></li>
+        </ul>
+      </article>
+
+      <article class="evo-card now">
+        <span class="evo-tag">Masa Kini · Abad 20–21</span>
+        <h3>Peran Manusia Pilihan Hari Ini</h3>
+        <p style="font-size:14px;color:var(--ink-soft);margin-bottom:4px">
+          Pengaruh tidak lagi diukur dari luas kerajaan, melainkan dari jejak
+          di kabinet, laboratorium, dan lapangan internasional.
+        </p>
+        <ul class="role-list">
+          <li><span><strong>Ilmuwan dunia</strong> — merancang teknologi dirgantara global</span></li>
+          <li><span><strong>Negarawan</strong> — presiden, wapres, menteri, gubernur</span></li>
+          <li><span><strong>Atlet internasional</strong> — membawa nama Indonesia ke liga dunia</span></li>
+          <li><span><strong>Pengusaha kelas dunia</strong> — membangun konglomerasi lintas benua</span></li>
+          <li><span><strong>Diplomat &amp; mediator</strong> — menjaga perdamaian &amp; pembangunan</span></li>
+        </ul>
+      </article>
+
+      <div class="evo-arrow">↓ &nbsp;Benang merah: keberanian, otak, dan pengabdian &nbsp;↓</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COLLECTION ===== -->
+<section class="collection">
+  <div class="filter-bar">
+    <div class="container">
+      <span class="label">Saring Koleksi</span>
+      <button class="chip active" data-filter="all">Semua (18)</button>
+      <button class="chip" data-filter="past">Masa Lampau (9)</button>
+      <button class="chip" data-filter="now">Masa Kini (9)</button>
+      <button class="chip" data-filter="politik">Politik &amp; Negara</button>
+      <button class="chip" data-filter="pahlawan">Pahlawan</button>
+      <button class="chip" data-filter="sains">Sains</button>
+      <button class="chip" data-filter="olahraga">Olahraga</button>
+      <button class="chip" data-filter="budaya">Budaya</button>
+      <button class="chip" data-filter="pengusaha">Pengusaha</button>
+      <span class="filter-count">Menampilkan <strong id="count">18</strong> koleksi</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="grid" id="grid"></div>
+  </div>
+</section>
+
+<!-- ===== GALLERY ===== -->
+<section class="gallery">
+  <div class="container">
+    <div class="section-head">
+      <div class="label">Bagian III — Galeri Foto</div>
+      <h2>Aneka Wajah Manusia Pilihan</h2>
+      <p>Klik setiap potret untuk melihat lebih dekat. Koleksi diurutkan sesuai abad kelahiran.</p>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <h3>Museum Manusia Pilihan</h3>
+    <p>
+      Halaman katalog digital ini menampilkan 18 tokoh pilihan dari tanah Sulawesi,
+      dari abad ke-17 hingga abad ke-21. Konten disusun untuk tujuan edukasi
+      dan penghormatan terhadap perjalanan sejarah leluhur.
+    </p>
+    <p class="note">
+      Catatan: beberapa tokoh masa lampau memiliki riwayat beragam dalam tradisi lisan
+      dan naskah lontaraq — tanggal dan peristiwa mengikuti versi yang umum diterima
+      sejarawan Indonesia. Tokoh masa kini disajikan berdasarkan karir publik yang
+      terverifikasi. Untuk penelitian akademik, silakan rujuk sumber primer.
+    </p>
+  </div>
+</footer>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- ===== LIGHTBOX ===== -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <div class="lightbox-content" id="lightboxContent"></div>
+  <div class="lightbox-cap" id="lightboxCap"></div>
+</div>
+
+<script>
+// ===== DATA: 18 TOKOH =====
+const figures = [
+  // ---------- MASA LAMPAU (9) ----------
+  {
+    id:1, era:"past", cat:"pahlawan", catLabel:"Pahlawan",
+    name:"Sultan Hasanuddin", years:"1629 – 1670",
+    role:"Raja Gowa ke-XVI, Pahlawan Nasional — dijuluki Belanda \"De Haantjes van den Oosten\" (Ayam Jantan dari Timur) karena perlawanannya yang sengit.",
+    initials:"SH",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir dengan nama I Mallombasi Daeng Mattawang Muhammad Said, putra Muhammad Said, Sultan Gowa XV. Naik tahta tahun 1653 dan memimpin Kerajaan Gowa pada masa puncak konflik dengan VOC Belanda.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pemersatu</strong> — menyatukan kerajaan-kerajaan Sulawesi Selatan untuk melawan VOC</li>
+        <li><strong>Perang Gowa–VOC (1660–1669)</strong> — perlawanan besar yang berakhir dengan Perjanjian Bungaya</li>
+        <li><strong>Simbol perlawanan</strong> — dijuluki Ayam Jantan dari Timur oleh Belanda karena tak pernah menyerah</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Ditetapkan sebagai Pahlawan Nasional Indonesia melalui SK Presiden No. 087/TK/1973. Makamnya di kompleks Benteng Somba Opu, Makassar, kini tempat ziarah sejarah.</p>`
+  },
+  {
+    id:2, era:"past", cat:"politik", catLabel:"Politik & Negara",
+    name:"Arung Palakka", years:"1634 – 1696",
+    role:"Pendiri & Arumpone (Raja) Bone ke-XV — pemimpin Bugis yang mengubah peta politik Sulawesi Selatan pada abad ke-17.",
+    initials:"AP",
+    bio:`<h4>Latar Belakang</h4>
+      <p>La Tenritatta To Unru, dikenal sebagai Arung Palakka, lahir di Palakka, Bone. Membangun persekutuan dengan VOC untuk mengalahkan Gowa, kemudian menjadi Arumpone (Raja Bone) yang mengantar Bone pada masa kejayaan.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pendiri Wangsa Bone modern</strong> — memulihkan kewibawaan Bone setelah dikalahkan Gowa</li>
+        <li><strong>Ekspansi kekuasaan</strong> — menguasai Luwu, Soppeng, dan Wajo, menjadikan Bone kekuatan dominan</li>
+        <li><strong>Penyelenggara adat</strong> — menetapkan struktur pemerintahan Bugis yang bertahan ratusan tahun</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Sistem pemerintahan dan adat Bugis yang ia tetapkan menjadi rujukan masyarakat Sulawesi Selatan hingga saat ini. Namanya diabadikan sebagai nama kota Palakka dan berbagai institusi.</p>`
+  },
+  {
+    id:3, era:"past", cat:"sains", catLabel:"Sains & Pengetahuan",
+    name:"Karaeng Pattingalloang", years:"1600 – 1654",
+    role:"Mangkubumi (Perdana Menteri) Kerajaan Gowa — polymath yang menguasai belasan bahasa dan dipuji ilmuwan Eropa.",
+    initials:"KP",
+    bio:`<h4>Latar Belakang</h4>
+      <p>I Mangngaccarrang Daeng Mabaalla, bendara &amp; mangkubumi Sultan Hasanuddin. Paman sekaligus penasihat utama sang Sultan. Menjadi salah satu pemimpin Nusantara paling terdidik abad ke-17.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Polymath</strong> — menguasai bahasa Melayu, Portugis, Spanyol, Belanda, Arab, Sanskerta, dan lainnya</li>
+        <li><strong>Astronomi &amp; matematika</strong> — mempelajari bumi, bintang, dan navigasi dari literatur Eropa</li>
+        <li><strong>Diplomat ulung</strong> — mengelola hubungan Gowa dengan bangsa-bangsa Eropa &amp; Asia</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Dalam catatan kompeni Belanda ia disebut sebagai pribumi paling berilmu di zamannya. Sering dianggap sebagai cendekiawan Sulawesi pertama yang menghubungkan dunia Timur dan Barat.</p>`
+  },
+  {
+    id:4, era:"past", cat:"politik", catLabel:"Politik & Negara",
+    name:"La Patau Paduka Sri Sultan Ismail", years:"1657 – 1715",
+    role:"Arumpone (Raja Bone) ke-XXIV, pemegang tahta setelah Arung Palakka — memperluas pengaruh Bone ke seluruh Sulawesi Selatan.",
+    initials:"LP",
+    bio:`<h4>Latar Belakang</h4>
+      <p>La Patau adalah putra Arung Palakka yang meneruskan kepemimpinan ayahnya di Bone. Memerintah pada masa ketika Bone menjadi kerajaan terkuat di Sulawesi Selatan.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Konsolidasi kerajaan</strong> — memperkuat hubungan Bone dengan Luwu, Soppeng, dan Wajo</li>
+        <li><strong>Penegak adat</strong> — melestarikan sistem <em>ade'</em> (hukum adat) Bugis sebagai fondasi pemerintahan</li>
+        <li><strong>Pelindung kesusastraan</strong> — mendukung penulisan lontaraq dan tradisi sastra Bugis</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Pemerintahannya menjadi masa stabil bagi Sulawesi Selatan setelah era perang besar. Sistem adat yang ia pegang masih dianut masyarakat Bugis hingga kini.</p>`
+  },
+  {
+    id:5, era:"past", cat:"pahlawan", catLabel:"Pahlawan",
+    name:"Andi Mappanyukki", years:"1872 – 1937",
+    role:"Arumpone (Raja Bone) XXXI, Pahlawan Nasional — pemimpin perlawanan terhadap Belanda di Sulawesi Selatan.",
+    initials:"AM",
+    bio:`<h4>Latar Belakang</h4>
+      <p>La Pamadojang, putra Andi Mappa. Naik tahta Bone dan memimpin perlawanan terhadap kolonial Belanda pada awal abad ke-20. Dikenal karena menolak tunduk kepada pemerintah Hindia Belanda.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pemimpin perlawanan</strong> — mengobarkan perlawanan rakyat Bone 1905–1907</li>
+        <li><strong>Penjaga kedaulatan</strong> — menolak menjadikan Bone wilayah taklukan langsung Belanda</li>
+        <li><strong>Simbol resistensi</strong> — diasingkan oleh Belanda namun tetap dihormati rakyat</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Ditetapkan sebagai Pahlawan Nasional melalui SK Presiden No. 086/TK/2002. Putranya, Andi Pangerang Petta Rani, juga tokoh penting Sulawesi Selatan.</p>`
+  },
+  {
+    id:6, era:"past", cat:"pahlawan", catLabel:"Pahlawan",
+    name:"Andi Abdullah Bau Massepe", years:"1907 – 1947",
+    role:"Pahlawan Nasional dari Soppeng — pemimpin perlawanan terhadap pendudukan Jepang dan Belanda di Sulawesi.",
+    initials:"AB",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Putra Arung (Kepala Adat) Suppa, seorang bangsawan Bugis yang memilih jalur perlawanan bersenjata ketimbang kompromi dengan penjajah. Aktif dalam gerillawan selama pendudukan Jepang dan revolusi kemerdekaan.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Komandan perlawanan</strong> — memimpin pasukan rakyat melawan Jepang (1942–1945) dan NICA Belanda (1945–1947)</li>
+        <li><strong>Simbol persatuan</strong> — menyatukan tokoh adat, agama, dan rakyat biasa dalam perjuangan</li>
+        <li><strong>Gugur sebagai syuhada</strong> — dieksekusi tentara Belanda pada 2 Februari 1947</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Ditetapkan sebagai Pahlawan Nasional melalui SK Presiden No. 074/TK/2002. Namanya diabadikan untuk jalan, bandara, dan berbagai institusi di Sulawesi.</p>`
+  },
+  {
+    id:7, era:"past", cat:"pahlawan", catLabel:"Pahlawan",
+    name:"Andi Sultan Daeng Radja", years:"1894 – 1969",
+    role:"Pahlawan Nasional dari Bone — arung yang berjuang mempertahankan kemerdekaan di Sulawesi Selatan.",
+    initials:"AR",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Arung (Kepala Adat) Palanro, Bone. Bangsawan Bugis yang berperan penting dalam revolusi kemerdekaan Indonesia di Sulawesi Selatan. Dikenal gigih melawan tentara NICA Belanda.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pemimpin milisi rakyat</strong> — mengorganisir perlawanan bersenjata rakyat Bone</li>
+        <li><strong>Penegak kemerdekaan</strong> — menyatakan Bone sebagai bagian Republik Indonesia (1945)</li>
+        <li><strong>Penasihat pemerintah</strong> — membantu penegakan administrasi awal RI di Sulawesi</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Ditetapkan sebagai Pahlawan Nasional melalui SK Presiden No. 077/TK/2002. Bekerja sama dengan Bau Massepe dalam perjuangan revolusi.</p>`
+  },
+  {
+    id:8, era:"past", cat:"budaya", catLabel:"Budaya & Keagamaan",
+    name:"K.H. Asnawi Abdurrachman", years:"1872 – 1955",
+    role:"Ulama besar asal Bulukumba — pemimpin pesantren dan perlawanan terhadap penjajah di jazirah Selatan.",
+    initials:"KA",
+    bio:`<h4>Latar Belakang</h4>
+      <p>K.H. Asnawi Abdurrachman adalah pendiri Pondok Pesantren As'adiyah di Sengkang, Wajo, salah satu pesantren terbesar di Indonesia Timur. Tokoh kunci dalam penyebaran Islam di Sulawesi Selatan pada awal abad ke-20.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pendidik</strong> — mendirikan As'adiyah yang melahirkan ribuan ulama dari Indonesia Timur</li>
+        <li><strong>Perlawanan terselubung</strong> — menggunakan jaringan pesantren untuk menumbuhkan kesadaran nasional</li>
+        <li><strong>Pemersatu umat</strong> — menyatukan tradisi Bugis dengan ajaran Islam yang moderat</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Pesantren As'adiyah masih berkembang hingga hari ini dan dikenal sebagai pusat pendidikan Islam terbesar di Indonesia Timur. Sistem pengajaran yang ia ciptakan masih diterapkan.</p>`
+  },
+  {
+    id:9, era:"past", cat:"budaya", catLabel:"Budaya & Keagamaan",
+    name:"Sawerigading", years:"± Abad 14 — Tokoh Legendaris",
+    role:"Tokoh legendaris dalam epik Bugis La Galigo — pelaut, pangeran Luwu, dan sumber banyak tradisi Bugis-Makassar.",
+    initials:"SW",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Sawerigading adalah tokoh utama dalam epos <em>La Galigo</em>, sastra epik terpanjang di dunia (lebih dari 6000 halaman). Putra Batara Guru, raja Luwu pertama dalam tradisi lontaraq. Sejarawan meyakini ia tokoh historis abad ke-14 yang dibungkus mitos.</p>
+      <h4>Peran &amp; Warisan</h4>
+      <ul>
+        <li><strong>Pelaut ulung</strong> — pelayaran ke Cina dalam epik melambangkan tradisi maritim Bugis</li>
+        <li><strong>Penyebar adat</strong> — berbagai aturan adat Bugis ditelusuri kepadanya</li>
+        <li><strong>Sumber sastra</strong> — eposnya menjadi salah satu warisan sastra dunia</li>
+      </ul>
+      <h4>Pentingnya</h4>
+      <p>La Galigo kini diakui sebagai Warisan Budaya Takbenda UNESCO (2011). Sawerigading menjadi simbol leluhur maritim Sulawesi yang menavigasi seluruh Nusantara dan Asia Tenggara.</p>`
+  },
+
+  // ---------- MASA KINI (9) ----------
+  {
+    id:10, era:"now", cat:"sains", catLabel:"Sains",
+    name:"Bacharuddin Jusuf Habibie", years:"1936 – 2019",
+    role:"Presiden RI ke-3, ilmuwan dirgantara dunia — bapak teknologi pesawat Indonesia dan tokoh transisi demokrasi.",
+    initials:"BH",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Parepare, Sulawesi Selatan. Meraih gelar doktor di bidang konstruksi pesawat terbang dari RWTH Aachen, Jerman. Bekerja di Messerschmitt-Bölkow-Blohm (MBB) selama 20 tahun dan menjadi direktur, tercatat sebagai orang Asia pertama yang menduduki posisi tersebut.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Ilmuwan dirgantara</strong> — mengembangkan pesawat CN-235, N-250 Gatot Kaca, dan berbagai teknologi dirgantara</li>
+        <li><strong>Menteri Ristek (1978–1998)</strong> — merancang strategi industrialisasi teknologi tinggi Indonesia</li>
+        <li><strong>Presiden RI ke-3 (1998–1999)</strong> — memimpin transisi dari otoriter ke demokrasi, melepaskan tahanan politik, mengadakan pemilu demokratis</li>
+        <li><strong>Bapak reformasi</strong> — desentralisasi, kebebasan pers, dan amandemen konstitusi</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Hingga akhir hayatnya aktif di Yayasan Habibie, mendorong riset &amp; demokrasi. Diberi pemakaman kenegaraan dan dihormati sebagai salah satu presiden paling berilmu dalam sejarah Indonesia.</p>`
+  },
+  {
+    id:11, era:"now", cat:"politik", catLabel:"Politik & Negara",
+    name:"Muhammad Jusuf Kalla", years:"1942 — sekarang",
+    role:"Wakil Presiden RI ke-10 (2004–2009) & ke-12 (2014–2019) — negarawan dan mediator konflik internasional.",
+    initials:"JK",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Watampone, Bone, Sulawesi Selatan. Pengusaha yang memimpin NV Hadji Kalla, grup usaha otomotif &amp; distribusi. Masuk politik melalui Golkar dan menjadi ketua umum partai tersebut.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Wakil Presiden RI</strong> — dua periode, di bawah Susilo Bambang Yudhoyono dan Joko Widodo</li>
+        <li><strong>Mediator damai Aceh (2005)</strong> — memimpin perundingan Helsinki yang mengakhiri konflik bersenjata 30 tahun</li>
+        <li><strong>Mediator internasional</strong> — terlibat perdamaian Filipina (Mindanao) dan Thailand (Selatan)</li>
+        <li><strong>Ketua PMI</strong> — memimpin Palang Merah Indonesia dalam berbagai bencana</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Satu dari sedikit wakil presiden yang menjabat dua periode di bawah presiden berbeda. Dikenal karena gaya komunikasi langsung, kerja cepat, dan jaringan diplomatik luas.</p>`
+  },
+  {
+    id:12, era:"now", cat:"olahraga", catLabel:"Olahraga",
+    name:"Asnawi Mangkualam", years:"1999 — sekarang",
+    role:"Pesepakbola internasional dari Bolaang Mongondow — pemain Indonesia pertama di K-League Korea Selatan.",
+    initials:"AN",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Bolaang Mongondow, Sulawesi Utara. Mulai karier profesional di PSM Makassar sebelum pindah ke liga top Asia. Salah satu pemain Indonesia paling terkenal di pentas internasional saat ini.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Klub Korea</strong> — bergabung dengan Ansan Greeners (2021) dan Jeonnam Dragons di K-League 2 Korea Selatan</li>
+        <li><strong>Kapten Timnas</strong> — pemain kunci Timnas Indonesia, terutama posisi bek kanan</li>
+        <li><strong>Simbol sepak bola modern</strong> — menunjukkan pemain Indonesia bisa bersaing di liga top Asia</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Membuka jalan bagi pemain Indonesia lain ke liga profesional Asia. Mengubah persepsi global tentang kualitas pesepakbola Nusantara.</p>`
+  },
+  {
+    id:13, era:"now", cat:"pengusaha", catLabel:"Pengusaha",
+    name:"Eka Tjipta Widjaja", years:"1923 — 2019",
+    role:"Pendiri Sinar Mas Group — konglomerat internasional asal Sulawesi, salah satu pengusaha terbesar Asia Tenggara.",
+    initials:"ET",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Fuqing, Cina, dan pindah ke Indonesia pada usia muda, menetap di Makassar dan Gorontalo. Memulai usaha dari berdagang kecil di Sulawesi sebelum membangun kerajaan bisnis yang menjadi Sinar Mas Group.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Sinar Mas Group</strong> — konglomerasi di kertas (Asia Pulp &amp; Paper), agribisnis (SMART), dan properti (Sinar Mas Land)</li>
+        <li><strong>Pelopor industri</strong> — membangun pabrik kertas terbesar Asia dan perkebunan kelapa sawit terintegrasi</li>
+        <li><strong>Filantropi</strong> — mendirikan Yayasan Eka Tjipta untuk pendidikan dan lingkungan</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Sinar Mas menjadi salah satu grup bisnis terbesar di Indonesia dengan operasi global. Mewakili gelombang pengusaha Sulawesi-Tionghoa yang membentuk ekonomi modern Indonesia.</p>`
+  },
+  {
+    id:14, era:"now", cat:"politik", catLabel:"Politik & Negara",
+    name:"Andi Mallarangeng", years:"1958 — sekarang",
+    role:"Menteri Pemuda dan Olahraga RI (2009–2013) — politisi dan akademisi dari Bone, Sulawesi Selatan.",
+    initials:"AM",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Watampone, Bone. Putra Andi Mattalatta, tokoh pers Sulawesi. Meraih gelar Ph.D. di bidang ilmu politik dari Northern Illinois University, AS. Salah satu arsitek Partai Demokrat.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Menteri Pemuda &amp; Olahraga</strong> — mempersiapkan Indonesia sebagai tuan rumah SEA Games 2011</li>
+        <li><strong>Juru bicara Partai Demokrat</strong> — tokoh komunikasi politik era reformasi</li>
+        <li><strong>Akademisi</strong> — mengajar dan menulis tentang politik Indonesia</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Mewakili generasi politisi Sulawesi Selatan berpendidikan internasional yang aktif di pentas politik nasional pasca-reformasi.</p>`
+  },
+  {
+    id:15, era:"now", cat:"politik", catLabel:"Politik & Negara",
+    name:"Anwar Hafid", years:"1961 — sekarang",
+    role:"Gubernur Sulawesi Selatan (2025–sekarang) — akademisi dan birokrat yang memimpin provinsi kelahirannya.",
+    initials:"AH",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Kabupaten Bulukumba, Sulawesi Selatan. Guru besar bidang ilmu tanah di Universitas Hasanuddin. Memasuki dunia birokrasi sebagai staf ahli dan kepala badan di pemerintahan provinsi.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Gubernur Sulsel</strong> — terpilih dalam Pilkada 2024, mulai menjabat 2025</li>
+        <li><strong>Akademisi &amp; peneliti</strong> — guru besar Ilmu Tanah, kandidat rektor Unhas</li>
+        <li><strong>Perencana pembangunan</strong> — latar belakang riset &amp; perencanaan untuk pembangunan daerah</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Mewakili tren pemimpin daerah Sulawesi Selatan modern: berlatar belakang akademik, bukan keturunan bangsawan, dan dipilih secara demokratis.</p>`
+  },
+  {
+    id:16, era:"now", cat:"pengusaha", catLabel:"Pengusaha",
+    name:"Nurdin Halid", years:"1958 — sekarang",
+    role:"Pengusaha &amp; Ketua Umum PSSI (2003–2011) — tokoh olahraga dan bisnis asal Bulukumba.",
+    initials:"NH",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Lahir di Bulukumba, Sulawesi Selatan. Pengusaha distribusi minyak goreng dan agribisnis yang aktif di kepemimpinan sepak bola nasional.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Ketua Umum PSSI</strong> — memimpin sepak bola Indonesia selama 8 tahun, masa kepemimpinan terpanjang dalam era modern</li>
+        <li><strong>Pengusaha</strong> — pendiri grup Kalla Foundation dan berbagai usaha di Sulawesi</li>
+        <li><strong>Politikus</strong> — anggota DPR RI beberapa periode dari Golkar</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Walaupun kontroversial, kepemimpinannya di PSSI bertepatan dengan peluncuran Liga Super Indonesia, sebuah babak baru sepak bola profesional tanah air.</p>`
+  },
+  {
+    id:17, era:"now", cat:"budaya", catLabel:"Budaya & Keagamaan",
+    name:"Daeng Soletta", years:"1921 — 1994",
+    role:"Tokoh budaya Makassar abad ke-20 — pelestari lontaraq, bahasa, dan tradisi Makassar modern.",
+    initials:"DS",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Tokoh budaya Makassar yang mendedikasikan hidup untuk pelestarian naskah lontaraq, bahasa Makassar, dan tradisi adat pada masa transisi dari kolonial ke Indonesia modern.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Pelestari lontaraq</strong> — mengumpulkan dan menyalin ratusan naskah adat Bugis-Makassar</li>
+        <li><strong>Pendidik bahasa</strong> — mengajar bahasa Makassar &amp; adat ke generasi muda</li>
+        <li><strong>Penasihat adat</strong> — menjadi rujukan pemerintah dan akademisi tentang adat Sulawesi Selatan</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Mewakili manusia pilihan masa kini yang memilih peran sebagai jembatan antara warisan leluhur dan dunia modern — tanpa mereka, banyak naskah lontaraq akan hilang.</p>`
+  },
+  {
+    id:18, era:"now", cat:"olahraga", catLabel:"Olahraga",
+    name:"Ramang", years:"1928 — 1987",
+    role:"Legenda sepak bola Indonesia dari Makassar — penyerang perintis PSM dan ikon sepak bola nasional 1950-an.",
+    initials:"RM",
+    bio:`<h4>Latar Belakang</h4>
+      <p>Abdul Rahman, dikenal sebagai Ramang. Lahir di Makassar. Penyerang legendaris PSM Makassar dan Timnas Indonesia pada era 1950-an, sering disebut sebagai salah satu penyerang terbaik Asia pada zamannya.</p>
+      <h4>Peran &amp; Jasa</h4>
+      <ul>
+        <li><strong>Ikon PSM Makassar</strong> — pemain kunci pada masa kejayaan awal klub</li>
+        <li><strong>Timnas Indonesia</strong> — mencetak banyak gol penting pada era kemerdekaan</li>
+        <li><strong>Inspirasi generasi</strong> — menjadi tolok ukur penyerang Sulawesi selama beberapa generasi</li>
+      </ul>
+      <h4>Warisan</h4>
+      <p>Nama Ramang masih diucapkan dengan hormat di Makassar. Mewakili era ketika manusia pilihan Sulawesi mulai mengukir jejak di panggung olahraga nasional.</p>`
+  }
+];
+
+// ===== AVATAR SVG BUILDER =====
+function avatarSVG(f, big=false){
+  const isPast = f.era === "past";
+  const bg = isPast ? "#FEF3C7" : "#CCFBF1";
+  const fg = isPast ? "#B45309" : "#0F766E";
+  const accent = "#2563EB";
+  const decoColor = isPast ? "#B45309" : "#0F766E";
+  const size = big ? 240 : 200;
+  return `
+  <svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+    <rect width="${size}" height="${size}" fill="${bg}"/>
+    <circle cx="${size/2}" cy="${size*0.38}" r="${size*0.18}" fill="#E2E8F0"/>
+    <path d="M ${size*0.30} ${size*0.55} Q ${size/2} ${size*0.78} ${size*0.70} ${size*0.55} L ${size*0.78} ${size} L ${size*0.22} ${size} Z" fill="#E2E8F0"/>
+    <g class="avatar-deco" stroke="${decoColor}">
+      <circle cx="${size*0.5}" cy="${size*0.5}" r="${size*0.42}" opacity="0.15"/>
+      <path d="M ${size*0.10} ${size*0.92} Q ${size/2} ${size*0.78} ${size*0.90} ${size*0.92}" opacity="0.25"/>
+    </g>
+    <text x="${size/2}" y="${size*0.85}" text-anchor="middle"
+      class="avatar-init" fill="${fg}"
+      font-size="${size*0.18}">${f.initials}</text>
+    <rect x="0" y="0" width="8" height="${size}" fill="${fg}"/>
+  </svg>`;
+}
+
+// ===== RENDER CARDS =====
+const grid = document.getElementById("grid");
+function renderCards(filter="all"){
+  const filtered = figures.filter(f => filter==="all" ? true : f.era===filter || f.cat===filter);
+  grid.innerHTML = filtered.map(f=>`
+    <article class="card" data-id="${f.id}" data-era="${f.era}" data-cat="${f.cat}">
+      <div class="card-media">
+        <span class="card-era ${f.era==='past'?'past':'now'}">${f.era==='past'?'Masa Lampau':'Masa Kini'}</span>
+        <span class="card-cat">${f.catLabel}</span>
+        ${avatarSVG(f)}
+      </div>
+      <div class="card-body">
+        <h3 class="card-name">${f.name}</h3>
+        <div class="card-years">${f.years}</div>
+        <p class="card-role">${f.role}</p>
+        <span class="card-cta">Lihat Biografi</span>
+      </div>
+    </article>
+  `).join("");
+  document.getElementById("count").textContent = filtered.length;
+  // attach click
+  document.querySelectorAll(".card").forEach(c=>{
+    c.addEventListener("click",()=>openModal(parseInt(c.dataset.id)));
+  });
+}
+renderCards();
+
+// ===== FILTER =====
+document.querySelectorAll(".chip").forEach(chip=>{
+  chip.addEventListener("click",()=>{
+    document.querySelectorAll(".chip").forEach(c=>c.classList.remove("active"));
+    chip.classList.add("active");
+    renderCards(chip.dataset.filter);
+  });
+});
+
+// ===== MODAL =====
+const overlay = document.getElementById("modalOverlay");
+const modal = document.getElementById("modal");
+function openModal(id){
+  const f = figures.find(x=>x.id===id);
+  if(!f) return;
+  modal.innerHTML = `
+    <div class="modal-head">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      ${avatarSVG(f,true)}
+    </div>
+    <div class="modal-body">
+      <div class="modal-tags">
+        <span class="tag ${f.era==='past'?'past':'now'}">${f.era==='past'?'Masa Lampau':'Masa Kini'}</span>
+        <span class="tag cat">${f.catLabel}</span>
+      </div>
+      <h2>${f.name}</h2>
+      <div class="years">${f.years}</div>
+      <p class="role">${f.role}</p>
+      <div class="bio">${f.bio}</div>
+    </div>
+  `;
+  overlay.classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  overlay.classList.remove("show");
+  document.body.style.overflow="";
+}
+overlay.addEventListener("click",e=>{ if(e.target===overlay) closeModal(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ closeModal(); closeLightbox(); }});
+
+// ===== GALLERY =====
+const galleryGrid = document.getElementById("galleryGrid");
+galleryGrid.innerHTML = figures.map(f=>`
+  <div class="gallery-item" data-id="${f.id}">
+    ${avatarSVG(f,false)}
+    <div class="cap">${f.name}</div>
+  </div>
+`).join("");
+document.querySelectorAll(".gallery-item").forEach(g=>{
+  g.addEventListener("click",()=>openLightbox(parseInt(g.dataset.id)));
+});
+
+// ===== LIGHTBOX =====
+const lightbox = document.getElementById("lightbox");
+const lightboxContent = document.getElementById("lightboxContent");
+const lightboxCap = document.getElementById("lightboxCap");
+function openLightbox(id){
+  const f = figures.find(x=>x.id===id);
+  if(!f) return;
+  lightboxContent.innerHTML = avatarSVG(f,true);
+  lightboxCap.innerHTML = `<strong style="font-size:18px;color:#fff;display:block;margin-bottom:4px">${f.name}</strong>${f.years} · ${f.catLabel}`;
+  lightbox.classList.add("show");
+  document.body.style.overflow="hidden";
+}
+function closeLightbox(){
+  lightbox.classList.remove("show");
+  document.body.style.overflow="";
+}
+document.getElementById("lightboxClose").addEventListener("click",closeLightbox);
+lightbox.addEventListener("click",e=>{ if(e.target===lightbox) closeLightbox(); });
+</script>
+</body>
+</html>
